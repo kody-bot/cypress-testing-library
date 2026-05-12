@@ -27,23 +27,23 @@ jobs:
         node: [20, 22, 24]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: ⬇️ Checkout repo
         uses: actions/checkout@v5
 
-      - name: Setup node
+      - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Download deps
+      - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: Run validate script
+      - name: ▶️ Run validate script
         run: npm run validate
 
-      - name: Upload coverage report
+      - name: ⬆️ Upload coverage report
         uses: codecov/codecov-action@v5
 
   build-release-artifact:
@@ -53,21 +53,21 @@ jobs:
       contents: read
     if: ${{ github.repository == 'testing-library/cypress-testing-library' && github.event_name == 'push' }}
     steps:
-      - name: Checkout repo
+      - name: ⬇️ Checkout repo
         uses: actions/checkout@v5
 
-      - name: Setup node
+      - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 24
 
-      - name: Install dependencies
+      - name: 📥 Download deps
         run: npm install --ignore-scripts
 
-      - name: Run build script
+      - name: 🏗 Run build script
         run: npm run build
 
-      - name: Upload package artifact
+      - name: 📦 Upload package artifact
         uses: actions/upload-artifact@v4
         with:
           name: npm-package-dist
@@ -85,22 +85,22 @@ jobs:
       pull-requests: write
     if: ${{ github.repository == 'testing-library/cypress-testing-library' && github.event_name == 'push' }}
     steps:
-      - name: Checkout repo
+      - name: ⬇️ Checkout repo
         uses: actions/checkout@v5
 
-      - name: Setup node
+      - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org/'
 
-      - name: Download package artifact
+      - name: 📦 Download package artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-package-dist
           path: dist
 
-      - name: Release
+      - name: 🚀 Release
         uses: cycjimmy/semantic-release-action@v5
         with:
           semantic_version: 25
